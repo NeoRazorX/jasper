@@ -1,0 +1,1 @@
+Añade la función fs_jasper() a FacturaScripts para poder generar archivos PDF a partir de archivos .jrxml de JasperResport.

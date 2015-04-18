@@ -52,7 +52,7 @@
 			</staticText>
 			<image>
 				<reportElement x="225" y="0" width="100" height="120" uuid="3679a20b-f38b-4404-a7f4-5604831d0da3"/>
-				<imageExpression><![CDATA["/home/angel/Proyectos/Facturascripts/FS_2015/view/img/logo.png"]]></imageExpression>
+				<imageExpression><![CDATA["../../../view/img/logo.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>

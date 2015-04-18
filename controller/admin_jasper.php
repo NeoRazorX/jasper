@@ -1,9 +1,8 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * @author Carlos García Gómez      neorazorx@gmail.com
+ * @copyright 2015, Carlos García Gómez. All Rights Reserved. 
  */
 
 if( !function_exists('fs_jasper') )
@@ -25,12 +24,20 @@ class admin_jasper extends fs_controller
    
    protected function private_core()
    {
-      $pdf_location = fs_jasper('plugins/jasper/reports/facturascripts.jrxml');
-      if($pdf_location)
+      if( strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN' AND !is_executable(getcwd().'/plugins/jasper/jasperstarter/bin/jasperstarter') )
       {
-         $this->new_message('<a href="'.$pdf_location.'" target="_blank">PDF</a> generado correctamente.');
+         $this->new_error_msg( getcwd().'/plugins/jasper/jasperstarter/bin/jasperstarter no tiene permisos de ejecución.' );
       }
-      else
-         $this->new_error_msg('Error al generar el PDF.');
+      
+      if( isset($_GET['test']) )
+      {
+         $file_location = fs_jasper('plugins/jasper/reports/facturascripts.jrxml', $_GET['test']);
+         if($file_location)
+         {
+            $this->new_message('<a href="'.$file_location.'" target="_blank">'.strtoupper($_GET['test']).'</a> generado correctamente.');
+         }
+         else
+            $this->new_error_msg('Error al generar el archivo '.strtoupper($_GET['test']).'.');
+      }
    }
 }

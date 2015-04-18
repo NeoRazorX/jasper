@@ -21,9 +21,23 @@
                (Opcional) <b>$params</b>: array con la lista de parámetros para el report.
             </li>
          </ul>
-         <p>
-            La función devuelve la ruta del archivo generado o FALSE en caso de fallo.
-         </p>
+         <p>La función devuelve la ruta del archivo generado o FALSE en caso de fallo.</p>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-sm-12">
+         <h2>Pruebas</h2>
+         <div class="btn-group">
+            <a href="{$fsc->url()}&test=pdf" class="btn btn-sm btn-default">
+               <span class="glyphicon glyphicon-file" aria-hidden="true"></span> &nbsp; PDF
+            </a>
+            <a href="{$fsc->url()}&test=docx" class="btn btn-sm btn-default">
+               <span class="glyphicon glyphicon-file" aria-hidden="true"></span> &nbsp; DOCX
+            </a>
+            <a href="{$fsc->url()}&test=odt" class="btn btn-sm btn-default">
+               <span class="glyphicon glyphicon-file" aria-hidden="true"></span> &nbsp; ODT
+            </a>
+         </div>
       </div>
    </div>
 </div>

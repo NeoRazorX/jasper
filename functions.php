@@ -23,23 +23,15 @@ function fs_jasper($jrxml_location, $format = 'pdf', $params = FALSE)
    }
    
    $cdir = getcwd();
-   if( !is_executable($cdir.'/plugins/jasper/jasperstarter/bin/'.$bin) )
-   {
-      echo $cdir.'/plugins/jasper/jasperstarter/bin/'.$bin.' no tiene permisos de ejecución.';
-   }
-   else if( file_exists($cdir.'/'.$jrxml_location) )
+   if( file_exists($cdir.'/'.$jrxml_location) )
    {
       /// nos movemos al directorio del report
       if( chdir( dirname($cdir.'/'.$jrxml_location) ) )
       {
-         /// ¿Existe el .jasper?
+         /// generamos el .jasper
          $jasper_location = substr( basename($cdir.'/'.$jrxml_location), 0, -5).'jasper';
-         if( !file_exists($jasper_location) )
-         {
-            /// si no existe lo compilamos
-            $cmd = $cdir."/plugins/jasper/jasperstarter/bin/".$bin." cp ".basename($cdir.'/'.$jrxml_location);
-            exec($cmd);
-         }
+         $cmd = $cdir."/plugins/jasper/jasperstarter/bin/".$bin." cp ".basename($cdir.'/'.$jrxml_location);
+         exec($cmd);
          
          if( file_exists($jasper_location) )
          {

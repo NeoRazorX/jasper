@@ -1,5 +1,31 @@
 {include="header"}
 
-
+<div class="container">
+   <div class="row">
+      <div class="col-sm-12">
+         <div class="page-header">
+            <h1>JasperReports en FacturaScripts</h1>
+         </div>
+         <p>
+            Este plugin añade la función <mark>fs_jasper($jrxml_location, $format = 'pdf', $params = FALSE)</mark>
+            a FacturaScripts.
+         </p>
+         <ul>
+            <li><b>$jrxml_location</b>: ruta relativa del archivo .jrxml</li>
+            <li>
+               (Opcional) <b>$format</b>: formato de salida, por defecto <b>pdf</b>.
+               Otros formatos soportados: rtf, xls,  xlsx, docx, odt, ods,
+               pptx, csv, html, xhtml, xml...
+            </li>
+            <li>
+               (Opcional) <b>$params</b>: array con la lista de parámetros para el report.
+            </li>
+         </ul>
+         <p>
+            La función devuelve la ruta del archivo generado o FALSE en caso de fallo.
+         </p>
+      </div>
+   </div>
+</div>
 
 {include="footer"}

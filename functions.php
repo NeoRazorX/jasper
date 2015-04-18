@@ -12,7 +12,7 @@
  * @param type $jrxml_location
  * @return string
  */
-function fs_jasper($jrxml_location, $params = FALSE)
+function fs_jasper($jrxml_location, $format = 'pdf', $params = FALSE)
 {
    $salida = FALSE;
    
@@ -53,7 +53,7 @@ function fs_jasper($jrxml_location, $params = FALSE)
             
             /// generamos el PDF
             $cmd = $cdir."/plugins/jasper/jasperstarter/bin/".$bin." pr ".$jasper_location." -t ".$dbtype.
-                    " -u ".FS_DB_USER." -p ".FS_DB_PASS." -o ".$pdf_name." -f pdf -H ".FS_DB_HOST." -n ".FS_DB_NAME;
+                    " -u ".FS_DB_USER." -p ".FS_DB_PASS." -o ".$pdf_name." -f ".$format." -H ".FS_DB_HOST." -n ".FS_DB_NAME;
             
             if($params)
             {
@@ -66,15 +66,15 @@ function fs_jasper($jrxml_location, $params = FALSE)
             
             exec($cmd);
             
-            if( file_exists($pdf_name.'.pdf') )
+            if( file_exists($pdf_name.'.'.$format) )
             {
                if( !file_exists($cdir.'/tmp/jasper') )
                {
                   mkdir($cdir.'/tmp/jasper');
                }
                
-               rename($pdf_name.'.pdf', $cdir.'/tmp/jasper/'.$pdf_name.'.pdf');
-               $salida = 'tmp/jasper/'.$pdf_name.'.pdf';
+               rename($pdf_name.'.'.$format, $cdir.'/tmp/jasper/'.$pdf_name.'.'.$format);
+               $salida = 'tmp/jasper/'.$pdf_name.'.'.$format;
             }
             else
                echo $cmd;

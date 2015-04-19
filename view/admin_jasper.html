@@ -7,21 +7,38 @@
             <h1>JasperReports en FacturaScripts</h1>
          </div>
          <p>
-            Este plugin añade la función <mark>fs_jasper($jrxml_location, $format = 'pdf', $params = FALSE)</mark>
-            a FacturaScripts.
+            Este plugin añade la clase <mark>jasper</mark> a FacturaScripts.
+            Para usarla, primero debemos cargarla:
          </p>
+         <code>require_model('jasper.php');</code>
+         <br/><br/>
+         <p>La clase incluye los elementos siguientes:</p>
          <ul>
-            <li><b>$jrxml_location</b>: ruta relativa del archivo .jrxml</li>
+            <li><b>$cmd_output</b>: un array con la lista completa de la salida de comandos ejecutados.</li>
+            <li><b>$errors</b>: un array con la lista de todos los errores que se han producido.</li>
             <li>
-               (Opcional) <b>$format</b>: formato de salida, por defecto <b>pdf</b>.
-               Otros formatos soportados: rtf, xls,  xlsx, docx, odt, ods,
-               pptx, csv, html, xhtml, xml...
+               <b>compile</b>($jrxml_location): genera el archivo .jasper a partir del .jrxml
+               <ul>
+                  <li>$jrxml_location: ruta relativa del archivo .jrxml</li>
+                  <li>Devuelve FALSE en caso de error.</li>
+               </ul>
             </li>
             <li>
-               (Opcional) <b>$params</b>: array con la lista de parámetros para el report.
+               <b>build</b>($jasper_location, $format = 'pdf', $params = FALSE): genera el archivo PDF (o el formato especificado)
+               <ul>
+                  <li>$jasper_location: ruta relativa del archivo .jasper</li>
+                  <li>
+                     (Opcional) $format: formato de salida, por defecto pdf.
+                     Otros formatos soportados: rtf, xls,  xlsx, docx, odt, ods,
+                     pptx, csv, html, xhtml, xml...
+                  </li>
+                  <li>
+                     (Opcional) $params: array con la lista de parámetros para el report.
+                  </li>
+                  <li>La función devuelve la ruta del archivo generado o FALSE en caso de fallo.</li>
+               </ul>
             </li>
          </ul>
-         <p>La función devuelve la ruta del archivo generado o FALSE en caso de fallo.</p>
       </div>
    </div>
    <div class="row">
@@ -38,6 +55,18 @@
                <span class="glyphicon glyphicon-file" aria-hidden="true"></span> &nbsp; ODT
             </a>
          </div>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-sm-12">
+         {if="$fsc->jasper->cmd_output"}
+         <h3>Salida de comandos:</h3>
+         <ul>
+            {loop="$fsc->jasper->cmd_output"}
+            <li>{$value}</li>
+            {/loop}
+         </ul>
+         {/if}
       </div>
    </div>
 </div>

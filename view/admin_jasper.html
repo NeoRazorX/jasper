@@ -4,7 +4,12 @@
    <div class="row">
       <div class="col-sm-12">
          <div class="page-header">
-            <h1>JasperReports en FacturaScripts</h1>
+            <h1>
+               JasperReports en FacturaScripts
+               <a class="btn btn-xs btn-default" href="{$fsc->url()}" title="Recargar la página">
+                  <span class="glyphicon glyphicon-refresh"></span>
+               </a>
+            </h1>
          </div>
          <p>
             Este plugin añade la clase <mark>jasper</mark> a FacturaScripts.
@@ -24,9 +29,9 @@
                </ul>
             </li>
             <li>
-               <b>build</b>($jasper_location, $format = 'pdf', $params = FALSE): genera el archivo PDF (o el formato especificado)
+               <b>build</b>($source_location, $format = 'pdf', $params = FALSE): genera el archivo PDF (o el formato especificado)
                <ul>
-                  <li>$jasper_location: ruta relativa del archivo .jasper</li>
+                  <li>$source_location: ruta relativa del archivo .jasper o al .jrxml</li>
                   <li>
                      (Opcional) $format: formato de salida, por defecto pdf.
                      Otros formatos soportados: rtf, xls,  xlsx, docx, odt, ods,
@@ -42,8 +47,8 @@
       </div>
    </div>
    <div class="row">
-      <div class="col-sm-12">
-         <h2>Pruebas</h2>
+      <div class="col-sm-6">
+         <h2>Prueba 1</h2>
          <div class="btn-group">
             <a href="{$fsc->url()}&test=pdf" class="btn btn-sm btn-default">
                <span class="glyphicon glyphicon-file" aria-hidden="true"></span> &nbsp; PDF
@@ -52,6 +57,20 @@
                <span class="glyphicon glyphicon-file" aria-hidden="true"></span> &nbsp; DOCX
             </a>
             <a href="{$fsc->url()}&test=odt" class="btn btn-sm btn-default">
+               <span class="glyphicon glyphicon-file" aria-hidden="true"></span> &nbsp; ODT
+            </a>
+         </div>
+      </div>
+      <div class="col-sm-6">
+         <h2>Prueba 2</h2>
+         <div class="btn-group">
+            <a href="{$fsc->url()}&test2=pdf" class="btn btn-sm btn-default">
+               <span class="glyphicon glyphicon-file" aria-hidden="true"></span> &nbsp; PDF
+            </a>
+            <a href="{$fsc->url()}&test2=docx" class="btn btn-sm btn-default">
+               <span class="glyphicon glyphicon-file" aria-hidden="true"></span> &nbsp; DOCX
+            </a>
+            <a href="{$fsc->url()}&test2=odt" class="btn btn-sm btn-default">
                <span class="glyphicon glyphicon-file" aria-hidden="true"></span> &nbsp; ODT
             </a>
          </div>

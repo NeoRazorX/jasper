@@ -56,6 +56,12 @@ class jasper
       $cdir = getcwd();
       if( file_exists($cdir.'/'.$jrxml_location) )
       {
+         if( !is_writable($cdir.'/'.$jrxml_location) )
+         {
+            $this->errors[] = 'No se puede escribir sobre el directorio de '.$cdir.'/'.$jrxml_location;
+            return FALSE;
+         }
+         
          /// nos movemos al directorio del report
          if( chdir( dirname($cdir.'/'.$jrxml_location) ) )
          {
@@ -86,62 +92,77 @@ class jasper
    }
    
    /**
-    * Genera un PDF (o el formaro seleccionado) a partir de un archivo .jasper
+    * Genera un PDF (o el formaro seleccionado) a partir de un archivo .jasper o .jrxml
     * Genera el archivo en el directorio tmp/jasper/
     * Devuelve la ruta del archivo generado o False en caso de fallo.
-    * @param type $jasper_location
+    * @param type $source_location
     * @param type $format
     * @param type $params
     * @return string
     */
-   public function build($jasper_location, $format = 'pdf', $params = FALSE)
+   public function build($source_location, $format = 'pdf', $params = FALSE)
    {
       $retorno = FALSE;
       
       $cdir = getcwd();
-      if( file_exists($cdir.'/'.$jasper_location) )
+      if( file_exists($cdir.'/'.$source_location) )
       {
-         /// nos movemos al directorio del .jasper
-         if( chdir( dirname($cdir.'/'.$jasper_location) ) )
+         /// nos movemos al directorio del .jasper o .jrxml
+         if( chdir( dirname($cdir.'/'.$source_location) ) )
          {
-            $pdf_name = substr( basename($cdir.'/'.$jasper_location), 0, -7).'_'.time();
-            
-            $dbtype = strtolower(FS_DB_TYPE);
-            if($dbtype == 'postgresql')
+            $pdf_name = FALSE;
+            if( substr($source_location, -6, 1) == '.' )
             {
-               $dbtype = 'postgres';
+               $pdf_name = substr( basename($cdir.'/'.$source_location), 0, -6).'_'.time();
+            }
+            else if( substr($source_location, -7, 1) == '.' )
+            {
+               $pdf_name = substr( basename($cdir.'/'.$source_location), 0, -7).'_'.time();
             }
             
-            /// generamos el PDF
-            $cmd = $cdir."/plugins/jasper/jasperstarter/bin/".$this->bin." pr ".basename($jasper_location)." -t ".$dbtype.
-                    " -u ".FS_DB_USER." -p ".FS_DB_PASS." -o ".$pdf_name." -f ".$format." -H ".FS_DB_HOST." -n ".FS_DB_NAME;
-            
-            if($params)
+            if($pdf_name)
             {
-               $cmd .= ' -P';
-               foreach($params as $key => $value)
+               $dbtype = strtolower(FS_DB_TYPE);
+               if($dbtype == 'postgresql')
                {
-                  $cmd .= ' '.$key.'='.$value;
-               }
-            }
-            
-            $salida = array($cmd);
-            exec($cmd.' 2>&1', $salida);
-            
-            foreach($salida as $sal)
-            {
-               $this->cmd_output[] = $sal;
-            }
-            
-            if( file_exists($pdf_name.'.'.$format) )
-            {
-               if( !file_exists($cdir.'/tmp/jasper') )
-               {
-                  mkdir($cdir.'/tmp/jasper');
+                  $dbtype = 'postgres';
                }
                
-               rename($pdf_name.'.'.$format, $cdir.'/tmp/jasper/'.$pdf_name.'.'.$format);
-               $retorno = 'tmp/jasper/'.$pdf_name.'.'.$format;
+               /// generamos el PDF
+               $cmd = $cdir."/plugins/jasper/jasperstarter/bin/".$this->bin." pr ".basename($source_location)." -t ".$dbtype.
+                       " -u ".FS_DB_USER." -p ".FS_DB_PASS." -o ".$pdf_name." -f ".$format." -H ".FS_DB_HOST." -n ".FS_DB_NAME;
+               
+               if($params)
+               {
+                  $cmd .= ' -P';
+                  foreach($params as $key => $value)
+                  {
+                     $cmd .= ' '.$key.'='.$value;
+                  }
+               }
+               
+               $salida = array($cmd);
+               exec($cmd.' 2>&1', $salida);
+               
+               foreach($salida as $sal)
+               {
+                  $this->cmd_output[] = $sal;
+               }
+               
+               if( file_exists($pdf_name.'.'.$format) )
+               {
+                  if( !file_exists($cdir.'/tmp/jasper') )
+                  {
+                     mkdir($cdir.'/tmp/jasper');
+                  }
+                  
+                  rename($pdf_name.'.'.$format, $cdir.'/tmp/jasper/'.$pdf_name.'.'.$format);
+                  $retorno = 'tmp/jasper/'.$pdf_name.'.'.$format;
+               }
+            }
+            else
+            {
+               $this->errors[] = 'No se ha detectado un archivo .jasper o .jrxml';
             }
             
             /// volvemos al directorio original
@@ -149,7 +170,7 @@ class jasper
          }
       }
       else
-         $this->errors[] = 'Archivo '.$cdir.'/'.$jasper_location.' no encontrado.';
+         $this->errors[] = 'Archivo '.$cdir.'/'.$source_location.' no encontrado.';
       
       return $retorno;
    }

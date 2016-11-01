@@ -2,7 +2,7 @@
 
 /**
  * @author Carlos García Gómez      neorazorx@gmail.com
- * @copyright 2015, Carlos García Gómez. All Rights Reserved. 
+ * @copyright 2015-2016, Carlos García Gómez. All Rights Reserved. 
  */
 
 /**
@@ -151,13 +151,13 @@ class jasper
                
                if( file_exists($pdf_name.'.'.$format) )
                {
-                  if( !file_exists($cdir.'/tmp/jasper') )
+                  if( !file_exists($cdir.'/tmp/'.FS_TMP_NAME.'jasper') )
                   {
-                     mkdir($cdir.'/tmp/jasper');
+                     mkdir($cdir.'/tmp/'.FS_TMP_NAME.'jasper');
                   }
                   
-                  rename($pdf_name.'.'.$format, $cdir.'/tmp/jasper/'.$pdf_name.'.'.$format);
-                  $retorno = 'tmp/jasper/'.$pdf_name.'.'.$format;
+                  rename($pdf_name.'.'.$format, $cdir.'/tmp/'.FS_TMP_NAME.'jasper/'.$pdf_name.'.'.$format);
+                  $retorno = 'tmp/'.FS_TMP_NAME.'jasper/'.$pdf_name.'.'.$format;
                }
             }
             else

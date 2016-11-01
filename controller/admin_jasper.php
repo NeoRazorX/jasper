@@ -2,7 +2,7 @@
 
 /**
  * @author Carlos García Gómez      neorazorx@gmail.com
- * @copyright 2015, Carlos García Gómez. All Rights Reserved. 
+ * @copyright 2015-2016, Carlos García Gómez. All Rights Reserved. 
  */
 
 require_model('jasper.php');
@@ -56,6 +56,43 @@ class admin_jasper extends fs_controller
          foreach($this->jasper->errors as $err)
          {
             $this->new_error_msg($err);
+         }
+      }
+      else if( isset($_POST['jrxml']) )
+      {
+         if( is_uploaded_file($_FILES['fjrxml']['tmp_name']) )
+         {
+            if( !file_exists('tmp/'.FS_TMP_NAME.'jasper') )
+            {
+               mkdir('tmp/'.FS_TMP_NAME.'jasper');
+            }
+            
+            /// lo movemos al temporal
+            if( copy($_FILES['fjrxml']['tmp_name'], 'tmp/'.FS_TMP_NAME.'jasper/test.jrxml') )
+            {
+               $this->jasper->compile('tmp/'.FS_TMP_NAME.'jasper/test.jrxml');
+               
+               $file_location = $this->jasper->build('tmp/'.FS_TMP_NAME.'jasper/test.jrxml');
+               if($file_location)
+               {
+                  $this->new_message('<a href="'.$file_location.'" target="_blank">PDF</a> generado correctamente.');
+               }
+               else
+                  $this->new_error_msg('Error al generar el archivo PDF.');
+               
+               foreach($this->jasper->errors as $err)
+               {
+                  $this->new_error_msg($err);
+               }
+            }
+            else
+            {
+               $this->new_error_msg('Error al copiar el archivo.');
+            }
+         }
+         else
+         {
+            $this->new_error_msg('Archivo no encontrado.');
          }
       }
    }

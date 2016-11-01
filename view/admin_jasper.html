@@ -1,91 +1,169 @@
 {include="header"}
 
-<div class="container">
+<div class="container-fluid">
    <div class="row">
       <div class="col-sm-12">
          <div class="page-header">
             <h1>
-               JasperReports en FacturaScripts
+               <i class="fa fa-file-pdf-o" aria-hidden="true"></i>&nbsp; JasperReports en FacturaScripts
                <a class="btn btn-xs btn-default" href="{$fsc->url()}" title="Recargar la página">
                   <span class="glyphicon glyphicon-refresh"></span>
                </a>
             </h1>
          </div>
-         <p>
-            Este plugin añade la clase <mark>jasper</mark> a FacturaScripts.
-            Para usarla, primero debemos cargarla:
-         </p>
-         <code>require_model('jasper.php');</code>
-         <br/><br/>
-         <p>La clase incluye los elementos siguientes:</p>
-         <ul>
-            <li><b>$cmd_output</b>: un array con la lista completa de la salida de comandos ejecutados.</li>
-            <li><b>$errors</b>: un array con la lista de todos los errores que se han producido.</li>
-            <li>
-               <b>compile</b>($jrxml_location): genera el archivo .jasper a partir del .jrxml
-               <ul>
-                  <li>$jrxml_location: ruta relativa del archivo .jrxml</li>
-                  <li>Devuelve FALSE en caso de error.</li>
-               </ul>
-            </li>
-            <li>
-               <b>build</b>($source_location, $format = 'pdf', $params = FALSE): genera el archivo PDF (o el formato especificado)
-               <ul>
-                  <li>$source_location: ruta relativa del archivo .jasper o al .jrxml</li>
-                  <li>
-                     (Opcional) $format: formato de salida, por defecto pdf.
-                     Otros formatos soportados: rtf, xls,  xlsx, docx, odt, ods,
-                     pptx, csv, html, xhtml, xml...
-                  </li>
-                  <li>
-                     (Opcional) $params: array con la lista de parámetros para el report.
-                  </li>
-                  <li>La función devuelve la ruta del archivo generado o FALSE en caso de fallo.</li>
-               </ul>
-            </li>
-         </ul>
-      </div>
-   </div>
-   <div class="row">
-      <div class="col-sm-6">
-         <h2>Prueba 1</h2>
-         <div class="btn-group">
-            <a href="{$fsc->url()}&test=pdf" class="btn btn-sm btn-default">
-               <span class="glyphicon glyphicon-file" aria-hidden="true"></span> &nbsp; PDF
-            </a>
-            <a href="{$fsc->url()}&test=docx" class="btn btn-sm btn-default">
-               <span class="glyphicon glyphicon-file" aria-hidden="true"></span> &nbsp; DOCX
-            </a>
-            <a href="{$fsc->url()}&test=odt" class="btn btn-sm btn-default">
-               <span class="glyphicon glyphicon-file" aria-hidden="true"></span> &nbsp; ODT
-            </a>
-         </div>
-      </div>
-      <div class="col-sm-6">
-         <h2>Prueba 2</h2>
-         <div class="btn-group">
-            <a href="{$fsc->url()}&test2=pdf" class="btn btn-sm btn-default">
-               <span class="glyphicon glyphicon-file" aria-hidden="true"></span> &nbsp; PDF
-            </a>
-            <a href="{$fsc->url()}&test2=docx" class="btn btn-sm btn-default">
-               <span class="glyphicon glyphicon-file" aria-hidden="true"></span> &nbsp; DOCX
-            </a>
-            <a href="{$fsc->url()}&test2=odt" class="btn btn-sm btn-default">
-               <span class="glyphicon glyphicon-file" aria-hidden="true"></span> &nbsp; ODT
-            </a>
-         </div>
-      </div>
-   </div>
-   <div class="row">
-      <div class="col-sm-12">
          {if="$fsc->jasper->cmd_output"}
-         <h3>Salida de comandos:</h3>
-         <ul>
-            {loop="$fsc->jasper->cmd_output"}
-            <li>{$value}</li>
-            {/loop}
-         </ul>
+         <div class="panel panel-warning">
+            <div class="panel-heading">
+               <h3 class="panel-title">Salida de comandos</h3>
+            </div>
+            <div class="panel-body">
+               <ul>
+                  {loop="$fsc->jasper->cmd_output"}
+                  <li>{$value}</li>
+                  {/loop}
+               </ul>
+            </div>
+         </div>
          {/if}
+         <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active">
+               <a href="#ayuda" aria-controls="ayuda" role="tab" data-toggle="tab">Ayuda</a>
+            </li>
+            <li role="presentation">
+               <a href="#desarrollo" aria-controls="desarrollo" role="tab" data-toggle="tab">Desarrollo</a>
+            </li>
+            <li role="presentation">
+               <a href="#ejemplos" aria-controls="ejemplos" role="tab" data-toggle="tab">Ejemplos</a>
+            </li>
+         </ul>
+         <br/>
+      </div>
+   </div>
+   <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="ayuda">
+         <div class="row">
+            <div class="col-sm-12">
+               <p>
+                  Este plugin incluye una versión reducida de JasperReports para ser usado
+                  dentro de FacturaScripts.
+               </p>
+               <br/>
+               <h4>Para su correcto funcionamiento require:</h4>
+               <ul>
+                  <li>Java en el servidor (o en tu PC, en el caso de que tengas FacturaScripts instalado en tu PC).</li>
+                  <li>
+                     Permisos de ejecución en:
+                     <ul>
+                        <li>plugins/jasper/jasperstarter/bin/jasperstarter (Linux/Mac)</li>
+                        <li>plugins/jasper/jasperstarter/bin/jasperstarter.exe (Windows)</li>
+                     </ul>
+                  </li>
+               </ul>
+            </div>
+         </div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="desarrollo">
+         <div class="row">
+            <div class="col-sm-12">
+               <p>
+                  Si quieres añadir una llamada a jasper para que tu plugin genere un
+                  PDF, ODT o DOCX, primero debes cargar la clase jasper.
+               </p>
+               <code>require_model('jasper.php');</code>
+               <br/><br/>
+               <p>La clase incluye los elementos siguientes:</p>
+               <ul>
+                  <li><b>$cmd_output</b>: un array con la lista completa de la salida de comandos ejecutados.</li>
+                  <li><b>$errors</b>: un array con la lista de todos los errores que se han producido.</li>
+                  <li>
+                     función <b>compile</b>($jrxml_location): genera el archivo .jasper a partir del .jrxml
+                     <ul>
+                        <li>$jrxml_location: ruta relativa del archivo .jrxml</li>
+                        <li>Devuelve FALSE en caso de error.</li>
+                     </ul>
+                  </li>
+                  <li>
+                     función <b>build</b>($source_location, $format = 'pdf', $params = FALSE): genera el archivo PDF (o el formato especificado)
+                     <ul>
+                        <li>$source_location: ruta relativa del archivo .jasper o al .jrxml</li>
+                        <li>
+                           (Opcional) $format: formato de salida, por defecto pdf.
+                           Otros formatos soportados: rtf, xls,  xlsx, docx, odt, ods,
+                           pptx, csv, html, xhtml, xml...
+                        </li>
+                        <li>
+                           (Opcional) $params: array con la lista de parámetros para el report.
+                        </li>
+                        <li>La función devuelve la ruta del archivo generado o FALSE en caso de fallo.</li>
+                     </ul>
+                  </li>
+               </ul>
+               <br/>
+               <h3>Ejemplo de uso:</h3>
+               <pre>$jasper = new jasper();
+
+/// generamos el archivo jasper a partir del jrxml
+$jasper->compile('plugins/jasper/report1/facturascripts.jrxml');
+
+/// ahora generamos el PDF
+$file_location = $jasper->build('plugins/jasper/report1/facturascripts.jasper');
+if($file_location)
+{
+   $this->new_message('&lt;a href="'.$file_location.'" target="_blank"&gt;PDF&lt;/a&gt; generado correctamente.');
+}
+else
+   $this->new_error_msg('Error al generar el archivo.');</pre>
+            </div>
+         </div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="ejemplos">
+         <div class="row">
+            <div class="col-sm-4">
+               <h3>Prueba 1</h3>
+               <div class="btn-group">
+                  <a href="{$fsc->url()}&test=pdf" class="btn btn-sm btn-default">
+                     <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp; PDF
+                  </a>
+                  <a href="{$fsc->url()}&test=docx" class="btn btn-sm btn-default">
+                     <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp; DOCX
+                  </a>
+                  <a href="{$fsc->url()}&test=odt" class="btn btn-sm btn-default">
+                     <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp; ODT
+                  </a>
+               </div>
+            </div>
+            <div class="col-sm-4">
+               <h3>Prueba 2</h3>
+               <div class="btn-group">
+                  <a href="{$fsc->url()}&test2=pdf" class="btn btn-sm btn-default">
+                     <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp; PDF
+                  </a>
+                  <a href="{$fsc->url()}&test2=docx" class="btn btn-sm btn-default">
+                     <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp; DOCX
+                  </a>
+                  <a href="{$fsc->url()}&test2=odt" class="btn btn-sm btn-default">
+                     <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp; ODT
+                  </a>
+               </div>
+            </div>
+            <div class="col-sm-4">
+               <h3>Prueba tu propio .jrxml</h3>
+               <form enctype="multipart/form-data" action="{$fsc->url()}#ejemplos" method="post" class="form">
+                  <input type="hidden" name="jrxml" value="TRUE"/>
+                  <div class="form-group">
+                     <p class="help-block">
+                        Los archivos <b>.jrxml</b> son los archivos que genera
+                        <a href="http://community.jaspersoft.com/project/jaspersoft-studio" target="_blank">Jasper Studio</a>
+                        para generar los documentos. Si tienes archivos .jrxml puedes probarlos aquí:
+                     </p>
+                     <input name="fjrxml" type="file" accept=".jrxml"/>
+                  </div>
+                  <button class="btn btn-sm btn-primary" type="submit">
+                     <span class="glyphicon glyphicon-file"></span>&nbsp; Probar
+                  </button>
+               </form>
+            </div>
+         </div>
       </div>
    </div>
 </div>

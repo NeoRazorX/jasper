@@ -38,7 +38,14 @@ class jasper
       }
       else if( !is_executable(getcwd().'/plugins/jasper/jasperstarter/bin/'.$this->bin) )
       {
-         $this->errors[] = getcwd().'/plugins/jasper/jasperstarter/bin/'.$this->bin.' no tiene permisos de ejecución.';
+         if( @chmod(getcwd().'/plugins/jasper/jasperstarter/bin/'.$this->bin, 0755) )
+         {
+            /// nada
+         }
+         else
+         {
+            $this->errors[] = getcwd().'/plugins/jasper/jasperstarter/bin/'.$this->bin.' no tiene permisos de ejecución.';
+         }
       }
    }
    
@@ -128,9 +135,13 @@ class jasper
                   $dbtype = 'postgres';
                }
                
-               /// generamos el PDF
-               $cmd = $cdir."/plugins/jasper/jasperstarter/bin/".$this->bin." pr ".basename($source_location)." -t ".$dbtype.
-                       " -u ".FS_DB_USER." -p ".FS_DB_PASS." -o ".$pdf_name." -f ".$format." -H ".FS_DB_HOST." -n ".FS_DB_NAME;
+               /// generamos el comando a ejecutar
+               $cmd = $cdir."/plugins/jasper/jasperstarter/bin/".$this->bin." pr ".basename($source_location)." -t ".$dbtype." -u ".FS_DB_USER;
+               if(FS_DB_PASS)
+               {
+                  $cmd .= " -p ".FS_DB_PASS;
+               }
+               $cmd .= " -o ".$pdf_name." -f ".$format." -H ".FS_DB_HOST." -n ".FS_DB_NAME;
                
                if($params)
                {

@@ -36,11 +36,6 @@ class admin_jasper extends fs_controller
          }
          else
             $this->new_error_msg('Error al generar el archivo '.strtoupper($_GET['test']).'.');
-         
-         foreach($this->jasper->errors as $err)
-         {
-            $this->new_error_msg($err);
-         }
       }
       else if( isset($_GET['test2']) )
       {
@@ -52,11 +47,6 @@ class admin_jasper extends fs_controller
          }
          else
             $this->new_error_msg('Error al generar el archivo '.strtoupper($_GET['test2']).'.');
-         
-         foreach($this->jasper->errors as $err)
-         {
-            $this->new_error_msg($err);
-         }
       }
       else if( isset($_POST['jrxml']) )
       {
@@ -79,11 +69,6 @@ class admin_jasper extends fs_controller
                }
                else
                   $this->new_error_msg('Error al generar el archivo PDF.');
-               
-               foreach($this->jasper->errors as $err)
-               {
-                  $this->new_error_msg($err);
-               }
             }
             else
             {
@@ -94,6 +79,11 @@ class admin_jasper extends fs_controller
          {
             $this->new_error_msg('Archivo no encontrado.');
          }
+      }
+      
+      foreach($this->jasper->errors as $err)
+      {
+         $this->new_error_msg($err);
       }
    }
 }

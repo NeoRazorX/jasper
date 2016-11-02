@@ -42,13 +42,16 @@
    <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="ayuda">
          <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-6">
                <p>
                   Este plugin incluye una versión reducida de JasperReports para ser usado
                   dentro de FacturaScripts.
                </p>
                <br/>
-               <h4>Para su correcto funcionamiento require:</h4>
+               <h3>
+                  <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                  Para su correcto funcionamiento require:
+               </h3>
                <ul>
                   <li>Java en el servidor (o en tu PC, en el caso de que tengas FacturaScripts instalado en tu PC).</li>
                   <li>
@@ -59,6 +62,43 @@
                      </ul>
                   </li>
                </ul>
+            </div>
+            <div class="col-sm-6">
+               <h3>
+                  <i class="fa fa-paint-brush" aria-hidden="true"></i> Diseño de informes:
+               </h3>
+               <p>
+                  Si quieres diseñar tus propios informes para usar con JasperReports, puedes usar
+                  el software Jaspersoft Studio, disponible para Windows, Linux y Mac.
+                  No es necesario registrarse, si lo pregunta, pulsa <b>no thanks</b>.
+               </p>
+               <a href="http://community.jaspersoft.com/project/jaspersoft-studio/releases" target="_blank" class="btn btn-default">
+                  <i class="fa fa-download" aria-hidden="true"></i>&nbsp; Jaspersoft Studio
+               </a>
+               <a href="https://www.youtube.com/playlist?list=PL-xL_Z8tWXEq4W-LIDgT9qpVuANltSJLe" target="_blank" class="btn btn-default">
+                  <i class="fa fa-youtube" aria-hidden="true"></i>&nbsp; Tutorial
+               </a>
+               <br/>
+               <br/>
+               <h4>
+                  <i class="fa fa-bug" aria-hidden="true"></i>&nbsp; ¿Te falta el driver para MySQL?
+               </h4>
+               <p>
+                  Si Jaspersoft Studio no te permite conectar a MySQL porque le falta el driver,
+                  puedes descargarlo <a href="http://dev.mysql.com/downloads/connector/j/" target="_blank">desde aquí</a>.
+                  Y añadirlo en la pestaña <b>driver classpath</b> del data adapter wizard.
+               </p>
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-sm-12">
+               <h3><i class="fa fa-cloud-upload" aria-hidden="true"></i> Colabora</h3>
+               <p>
+                  Prueba y comparte tus informes con la comunidad FacturaScripts. Cuantos más mejor ;-)
+               </p>
+               <a href="https://www.facturascripts.com/comm3/index.php?page=community_enviar_plugin" target="_blank" class="btn btn-sm btn-default">
+                  Envía tus informes
+               </a>
             </div>
          </div>
       </div>
@@ -153,10 +193,16 @@ else
                   <div class="form-group">
                      <p class="help-block">
                         Los archivos <b>.jrxml</b> son los archivos que genera
-                        <a href="http://community.jaspersoft.com/project/jaspersoft-studio" target="_blank">Jasper Studio</a>
+                        <a href="http://community.jaspersoft.com/project/jaspersoft-studio" target="_blank">Jaspersoft Studio</a>
                         para generar los documentos. Si tienes archivos .jrxml puedes probarlos aquí:
                      </p>
                      <input name="fjrxml" type="file" accept=".jrxml"/>
+                  </div>
+                  <div class="form-group">
+                     <p class="help-block">
+                        <b>Opcional</b>: añade la imagen que necesites.
+                     </p>
+                     <input name="fimagen" type="file" accept="image/jpeg, image/png"/>
                   </div>
                   <button class="btn btn-sm btn-primary" type="submit">
                      <span class="glyphicon glyphicon-file"></span>&nbsp; Probar

@@ -27,8 +27,27 @@ class admin_jasper extends fs_controller
       
       if( isset($_GET['test']) )
       {
-         $this->jasper->compile('plugins/jasper/report1/facturascripts.jrxml');
-         
+         $this->report1();
+      }
+      else if( isset($_GET['test2']) )
+      {
+         $this->report2();
+      }
+      else if( isset($_POST['jrxml']) )
+      {
+         $this->nuevo_report();
+      }
+      
+      foreach($this->jasper->errors as $err)
+      {
+         $this->new_error_msg($err);
+      }
+   }
+   
+   private function report1()
+   {
+      if( $this->jasper->compile('plugins/jasper/report1/facturascripts.jrxml') )
+      {
          $file_location = $this->jasper->build('plugins/jasper/report1/facturascripts.jasper', $_GET['test']);
          if($file_location)
          {
@@ -37,10 +56,13 @@ class admin_jasper extends fs_controller
          else
             $this->new_error_msg('Error al generar el archivo '.strtoupper($_GET['test']).'.');
       }
-      else if( isset($_GET['test2']) )
+   }
+   
+   private function report2()
+   {
+      if( $this->jasper->compile('plugins/jasper/report2/articulos.jrxml') )
       {
-         $params = array('PARAM_prueba' => 'parametrodeprueba');
-         $file_location = $this->jasper->build('plugins/jasper/report2/facturascripts.jrxml', $_GET['test2'], $params);
+         $file_location = $this->jasper->build('plugins/jasper/report2/articulos.jasper', $_GET['test2']);
          if($file_location)
          {
             $this->new_message('<a href="'.$file_location.'" target="_blank">'.strtoupper($_GET['test2']).'</a> generado correctamente.');
@@ -48,20 +70,27 @@ class admin_jasper extends fs_controller
          else
             $this->new_error_msg('Error al generar el archivo '.strtoupper($_GET['test2']).'.');
       }
-      else if( isset($_POST['jrxml']) )
+   }
+   
+   private function nuevo_report()
+   {
+      if( !file_exists('tmp/'.FS_TMP_NAME.'jasper') )
       {
-         if( is_uploaded_file($_FILES['fjrxml']['tmp_name']) )
+         mkdir('tmp/'.FS_TMP_NAME.'jasper');
+      }
+      
+      if( is_uploaded_file($_FILES['fimagen']['tmp_name']) )
+      {
+         copy($_FILES['fimagen']['tmp_name'], 'tmp/'.FS_TMP_NAME.'jasper/'.$_FILES['fimagen']['name']);
+      }
+      
+      if( is_uploaded_file($_FILES['fjrxml']['tmp_name']) )
+      {
+         /// lo movemos al temporal
+         if( copy($_FILES['fjrxml']['tmp_name'], 'tmp/'.FS_TMP_NAME.'jasper/test.jrxml') )
          {
-            if( !file_exists('tmp/'.FS_TMP_NAME.'jasper') )
+            if( $this->jasper->compile('tmp/'.FS_TMP_NAME.'jasper/test.jrxml') )
             {
-               mkdir('tmp/'.FS_TMP_NAME.'jasper');
-            }
-            
-            /// lo movemos al temporal
-            if( copy($_FILES['fjrxml']['tmp_name'], 'tmp/'.FS_TMP_NAME.'jasper/test.jrxml') )
-            {
-               $this->jasper->compile('tmp/'.FS_TMP_NAME.'jasper/test.jrxml');
-               
                $file_location = $this->jasper->build('tmp/'.FS_TMP_NAME.'jasper/test.jrxml');
                if($file_location)
                {
@@ -70,20 +99,15 @@ class admin_jasper extends fs_controller
                else
                   $this->new_error_msg('Error al generar el archivo PDF.');
             }
-            else
-            {
-               $this->new_error_msg('Error al copiar el archivo.');
-            }
          }
          else
          {
-            $this->new_error_msg('Archivo no encontrado.');
+            $this->new_error_msg('Error al copiar el archivo.');
          }
       }
-      
-      foreach($this->jasper->errors as $err)
+      else
       {
-         $this->new_error_msg($err);
+         $this->new_error_msg('Archivo no encontrado.');
       }
    }
 }
